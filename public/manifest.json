@@ -1,7 +1,7 @@
 {
-  "name": "GEZİYÖNET — Okul Gezi Yönetim Sistemi",
-  "short_name": "GEZİYÖNET",
-  "description": "Okul gezi ve tur organizasyonları için yönetim paneli",
+  "name": "DMTAL Gezi Yönetim Sistemi",
+  "short_name": "DMTALGEZİ",
+  "description": "Dörtçelik Mesleki ve Teknik Anadolu Lisesi",
   "start_url": "/dashboard",
   "scope": "/",
   "display": "standalone",
