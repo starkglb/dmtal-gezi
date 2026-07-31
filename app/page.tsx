@@ -27,17 +27,38 @@ export default function LoginPage() {
     }
   }, [user, authLoading, router]);
 
-  // Detect if any admin exists — if not, show setup mode
-  useEffect(() => {
-    (async () => {
-      const { count } = await supabase
+// Ana yönetici hesabı var mı kontrol et
+useEffect(() => {
+  const checkAdmin = async () => {
+    try {
+      const { count, error } = await supabase
         .from('system_users')
-        .select('*', { count: 'exact', head: true });
-      if (count === 0) {
-        setMode('setup');
+        .select('*', {
+          count: 'exact',
+          head: true,
+        })
+        .eq('role', 'ana_yonetici')
+        .eq('is_active', true);
+
+      if (error) {
+        console.error('Admin kontrol hatası:', error);
+        return;
       }
-    })();
-  }, []);
+
+      console.log('Aktif ana yönetici sayısı:', count);
+
+      if ((count ?? 0) === 0) {
+        setMode('setup');
+      } else {
+        setMode('login');
+      }
+    } catch (error) {
+      console.error('Beklenmeyen admin kontrol hatası:', error);
+    }
+  };
+
+  checkAdmin();
+}, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
