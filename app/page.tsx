@@ -134,8 +134,8 @@ useEffect(() => {
             <Bus className="h-7 w-7" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">GEZİYÖNET</h1>
-            <p className="text-sm text-blue-200">Okul Gezi Yönetim Sistemi</p>
+            <h1 className="text-2xl font-bold tracking-tight">DMTAL Gezi Yönetim Sistemi</h1>
+            <p className="text-sm text-blue-200">Dörtçelik Mesleki ve Teknik Anadolu Lisesi</p>
           </div>
         </div>
 
@@ -162,7 +162,7 @@ useEffect(() => {
           </div>
         </div>
 
-        <p className="text-xs text-blue-300">© {new Date().getFullYear()} GEZİYÖNET — Tüm hakları saklıdır.</p>
+        <p className="text-xs text-blue-300">© {new Date().getFullYear()} DMTAL Gezi Yönetim Sistemi — Tüm hakları saklıdır.</p>
       </div>
 
       {/* Right panel - form */}
@@ -173,7 +173,7 @@ useEffect(() => {
               <Bus className="h-6 w-6" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-800">GEZİYÖNET</h1>
+              <h1 className="text-xl font-bold text-slate-800">DMTAL Gezi Yönetim Sistemi</h1>
               <p className="text-xs text-slate-500">Okul Gezi Yönetim Sistemi</p>
             </div>
           </div>
