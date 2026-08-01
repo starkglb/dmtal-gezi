@@ -189,10 +189,17 @@ export function TripBusesTab({ trip }: { trip: Trip }) {
 
 function BusForm({ trip, bus, onSaved, onCancel }: { trip: Trip; bus: Bus | null; onSaved: () => void; onCancel: () => void }) {
   const { user } = useAuth();
-  const [form, setForm] = useState({
-    bus_number: '', plate: '', company: '', capacity: '46',
-    driver_name: '', driver_phone: '', guide_name: '', responsible_teacher: '', notes: '',
-  });
+const [form, setForm] = useState({
+  bus_number: '',
+  plate: '',
+  company: '',
+  capacity: '50',
+  driver_name: '',
+  driver_phone: '',
+  guide_name: '',
+  responsible_teacher: '',
+  notes: '',
+});
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -255,14 +262,38 @@ function BusForm({ trip, bus, onSaved, onCancel }: { trip: Trip; bus: Bus | null
           <label className="mb-1.5 block text-sm font-medium text-slate-700">Otobüs Numarası *</label>
           <input value={form.bus_number} onChange={(e) => setForm({ ...form, bus_number: e.target.value })} className={inputClass} placeholder="1" />
         </div>
-        <div>
-          <label className="mb-1.5 block text-sm font-medium text-slate-700">Kapasite</label>
-          <select value={form.capacity} onChange={(e) => setForm({ ...form, capacity: e.target.value })} className={inputClass}>
-            <option value="46">46 Kişilik</option>
-            <option value="50">50 Kişilik</option>
-            <option value="54">54 Kişilik</option>
-          </select>
-        </div>
+<div>
+  <label className="mb-1.5 block text-sm font-medium text-slate-700">
+    Otobüs Modeli ve Kapasitesi
+  </label>
+
+  <select
+    value={form.capacity}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        capacity: e.target.value,
+      })
+    }
+    className={inputClass}
+  >
+    <option value="30">
+      Otokar Sultan — 30 Kişilik — 2+2
+    </option>
+
+    <option value="31">
+      Otokar Sultan — 31 Kişilik — 2+2
+    </option>
+
+    <option value="50">
+      Mercedes-Benz Tourismo — 50 Kişilik — 2+2
+    </option>
+
+    <option value="51">
+      Mercedes-Benz Tourismo — 51 Kişilik — 2+2
+    </option>
+  </select>
+</div>
         <div>
           <label className="mb-1.5 block text-sm font-medium text-slate-700">Plaka</label>
           <input value={form.plate} onChange={(e) => setForm({ ...form, plate: e.target.value })} className={inputClass} placeholder="34 ABC 123" />
