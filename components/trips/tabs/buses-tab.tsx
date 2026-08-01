@@ -211,7 +211,7 @@ const [form, setForm] = useState({
         responsible_teacher: bus.responsible_teacher || '', notes: bus.notes || '',
       });
     } else {
-      setForm({ bus_number: '1', plate: '', company: '', capacity: '46', driver_name: '', driver_phone: '', guide_name: '', responsible_teacher: '', notes: '' });
+      setForm({ bus_number: '1', plate: '', company: '', capacity: '50', driver_name: '', driver_phone: '', guide_name: '', responsible_teacher: '', notes: '' });
     }
   }, [bus]);
 
