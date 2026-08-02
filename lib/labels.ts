@@ -10,6 +10,13 @@ import {
   ExpensePaymentStatus,
   ReminderStatus,
   ReminderType,
+  IncidentType,
+  IncidentStatus,
+  BlacklistType,
+  BlacklistStatus,
+  EmergencyType,
+  EmergencyUrgency,
+  EmergencyStatus,
 } from './types';
 
 export const roleLabels: Record<UserRole, string> = {
@@ -99,6 +106,65 @@ export const reminderTypeLabels: Record<ReminderType, string> = {
   genel: 'Genel',
 };
 
+export const incidentTypeLabels: Record<IncidentType, string> = {
+  disiplin_sorunu: 'Disiplin Sorunu',
+  gezi_kurallarina_uymama: 'Gezi Kurallarına Uymama',
+  ogretmen_talimatina_uymama: 'Öğretmen Talimatına Uymama',
+  gruptan_izinsiz_ayrilma: 'Gezi Grubundan İzinsiz Ayrılma',
+  gec_kalma: 'Geç Kalma',
+  otobus_kurallari_ihlali: 'Otobüs Kurallarını İhlal Etme',
+  katilimcilari_rahatsiz_etme: 'Diğer Katılımcıları Rahatsız Etme',
+  fiziksel_sozlu_tartisma: 'Fiziksel veya Sözlü Tartışma',
+  esyaya_zarar_verme: 'Eşyaya Zarar Verme',
+  guvenlik_kurallari_ihlali: 'Güvenlik Kurallarını İhlal Etme',
+  diger: 'Diğer',
+};
+
+export const incidentStatusLabels: Record<IncidentStatus, string> = {
+  acik: 'Açık',
+  inceleniyor: 'İnceleniyor',
+  cozuldu: 'Çözüldü',
+  kapatildi: 'Kapatıldı',
+};
+
+export const blacklistTypeLabels: Record<BlacklistType, string> = {
+  gecici: 'Geçici',
+  suresiz: 'Süresiz',
+  inceleme_altinda: 'İnceleme Altında',
+};
+
+export const blacklistStatusLabels: Record<BlacklistStatus, string> = {
+  aktif: 'Aktif',
+  pasif: 'Pasif',
+  suresi_doldu: 'Süresi Doldu',
+  kaldirildi: 'Kaldırıldı',
+};
+
+export const emergencyTypeLabels: Record<EmergencyType, string> = {
+  saglik_durumu: 'Sağlık Durumu',
+  kayip_ogrenci: 'Kayıp Öğrenci',
+  otobus_arizasi: 'Otobüs Arızası',
+  trafik_kazasi: 'Trafik Kazası',
+  guvenlik_sorunu: 'Güvenlik Sorunu',
+  ogrenci_acil_durum: 'Öğrenciyle İlgili Acil Durum',
+  dogal_olay: 'Doğal Olay veya Hava Koşulu',
+  diger: 'Diğer',
+};
+
+export const emergencyUrgencyLabels: Record<EmergencyUrgency, string> = {
+  dusuk: 'Düşük',
+  orta: 'Orta',
+  yuksek: 'Yüksek',
+  kritik: 'Kritik',
+};
+
+export const emergencyStatusLabels: Record<EmergencyStatus, string> = {
+  aktif: 'Aktif',
+  mudahale_ediliyor: 'Müdahale Ediliyor',
+  cozuldu: 'Çözüldü',
+  kapatildi: 'Kapatıldı',
+};
+
 export const rolePermissions: Record<UserRole, string[]> = {
   ana_yonetici: [
     'dashboard',
@@ -116,6 +182,10 @@ export const rolePermissions: Record<UserRole, string[]> = {
     'reports',
     'reminders',
     'settings',
+    'incidents',
+    'rules',
+    'blacklist',
+    'emergency',
   ],
   gezi_sorumlusu: [
     'dashboard',
@@ -132,6 +202,9 @@ export const rolePermissions: Record<UserRole, string[]> = {
     'documents',
     'reports',
     'reminders',
+    'incidents',
+    'blacklist',
+    'emergency',
   ],
   odeme_sorumlusu: [
     'dashboard',
@@ -150,5 +223,6 @@ export const rolePermissions: Record<UserRole, string[]> = {
     'attendance',
     'documents',
     'reminders',
+    'incidents',
   ],
 };

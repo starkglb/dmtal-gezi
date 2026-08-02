@@ -14,6 +14,10 @@ import {
   BarChart3,
   Bell,
   Settings,
+  AlertTriangle,
+  ShieldAlert,
+  Siren,
+  ScrollText,
 } from 'lucide-react';
 
 export interface NavItem {
@@ -34,6 +38,10 @@ export const navItems: NavItem[] = [
   { label: 'Yemek Yönetimi', href: '/dashboard/yemekler', icon: UtensilsCrossed, permission: 'meals', emoji: '🍽️' },
   { label: 'Yoklama', href: '/dashboard/yoklama', icon: CheckSquare, permission: 'attendance', emoji: '✅' },
   { label: 'Masraflar', href: '/dashboard/masraflar', icon: Receipt, permission: 'expenses', emoji: '💸' },
+  { label: 'Olay ve Durumlar', href: '/dashboard/olaylar', icon: AlertTriangle, permission: 'incidents', emoji: '⚠️' },
+  { label: 'Gezi Kuralları', href: '/dashboard/gezi-kurallari', icon: ScrollText, permission: 'rules', emoji: '📋' },
+  { label: 'Kara Liste', href: '/dashboard/kara-liste', icon: ShieldAlert, permission: 'blacklist', emoji: '⛔' },
+  { label: 'Acil Durum Merkezi', href: '/dashboard/acil-durum', icon: Siren, permission: 'emergency', emoji: '🚨' },
   { label: 'Sorumlular', href: '/dashboard/sorumlular', icon: UserCog, permission: 'staff', emoji: '👨‍🏫' },
   { label: 'WhatsApp Merkezi', href: '/dashboard/whatsapp', icon: MessageCircle, permission: 'whatsapp', emoji: '💬' },
   { label: 'Belgeler ve PDF', href: '/dashboard/belgeler', icon: FileText, permission: 'documents', emoji: '📄' },

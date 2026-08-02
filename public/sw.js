@@ -31,6 +31,61 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+// Push notification handler
+self.addEventListener('push', (event) => {
+  let data = { title: '🚨 ACİL DURUM', body: 'Acil durum bildirimi', url: '/dashboard/acil-durum' };
+  try {
+    if (event.data) data = event.data.json();
+  } catch (e) {
+    if (event.data) data.body = event.data.text();
+  }
+
+  const options = {
+    body: data.body,
+    icon: '/icons/icon-192.png',
+    badge: '/icons/icon-192.png',
+    vibrate: [200, 100, 200, 100, 200],
+    tag: 'emergency',
+    renotify: true,
+    requireInteraction: true,
+    data: { url: data.url || '/dashboard/acil-durum', emergencyId: data.emergencyId },
+    actions: [
+      { action: 'view', title: 'Detayları Gör' },
+      { action: 'close', title: 'Kapat' },
+    ],
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, options)
+  );
+});
+
+// Notification click handler
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  if (event.action === 'close') return;
+
+  const targetUrl = event.notification.data?.url || '/dashboard/acil-durum';
+
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      // If PWA is open, focus it and navigate
+      for (const client of clientList) {
+        if (client.url.includes(self.location.origin)) {
+          client.focus();
+          client.postMessage({ type: 'EMERGENCY_NOTIFICATION', url: targetUrl, emergencyId: event.notification.data?.emergencyId });
+          return;
+        }
+      }
+      // Otherwise open new window
+      if (self.clients.openWindow) {
+        return self.clients.openWindow(targetUrl);
+      }
+    })
+  );
+});
+
 self.addEventListener('fetch', (event) => {
   const { request } = event;
 

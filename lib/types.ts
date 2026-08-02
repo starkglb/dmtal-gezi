@@ -295,3 +295,141 @@ export interface ParticipantWithCalculations extends ParticipantWithDetails {
   trip_remaining: number;
   trip_payment_status: PaymentStatus;
 }
+
+// ============================================================
+// Yeni Modüller: Olay, Kara Liste, Acil Durum, Push
+// ============================================================
+
+export type IncidentType =
+  | 'disiplin_sorunu'
+  | 'gezi_kurallarina_uymama'
+  | 'ogretmen_talimatina_uymama'
+  | 'gruptan_izinsiz_ayrilma'
+  | 'gec_kalma'
+  | 'otobus_kurallari_ihlali'
+  | 'katilimcilari_rahatsiz_etme'
+  | 'fiziksel_sozlu_tartisma'
+  | 'esyaya_zarar_verme'
+  | 'guvenlik_kurallari_ihlali'
+  | 'diger';
+
+export type IncidentStatus = 'acik' | 'inceleniyor' | 'cozuldu' | 'kapatildi';
+
+export interface TripRule {
+  id: string;
+  rule_text: string;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Incident {
+  id: string;
+  trip_id: string | null;
+  participant_id: string | null;
+  incident_type: IncidentType;
+  incident_date: string;
+  incident_time: string | null;
+  location: string | null;
+  description: string | null;
+  handled_by: string | null;
+  status: IncidentStatus;
+  admin_note: string | null;
+  send_to_blacklist: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export type BlacklistType = 'gecici' | 'suresiz' | 'inceleme_altinda';
+
+export type BlacklistStatus = 'aktif' | 'pasif' | 'suresi_doldu' | 'kaldirildi';
+
+export interface BlacklistEntry {
+  id: string;
+  participant_id: string;
+  trip_id: string | null;
+  incident_id: string | null;
+  blacklist_type: BlacklistType;
+  start_date: string;
+  end_date: string | null;
+  admin_note: string | null;
+  status: BlacklistStatus;
+  removal_reason: string | null;
+  removed_by: string | null;
+  removed_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface BlacklistViolation {
+  id: string;
+  blacklist_entry_id: string;
+  trip_rule_id: string;
+  created_at: string;
+}
+
+export interface BlacklistHistory {
+  id: string;
+  blacklist_entry_id: string;
+  action: string;
+  action_by: string | null;
+  reason: string | null;
+  previous_status: string | null;
+  new_status: string | null;
+  created_at: string;
+}
+
+export type EmergencyType =
+  | 'saglik_durumu'
+  | 'kayip_ogrenci'
+  | 'otobus_arizasi'
+  | 'trafik_kazasi'
+  | 'guvenlik_sorunu'
+  | 'ogrenci_acil_durum'
+  | 'dogal_olay'
+  | 'diger';
+
+export type EmergencyUrgency = 'dusuk' | 'orta' | 'yuksek' | 'kritik';
+
+export type EmergencyStatus = 'aktif' | 'mudahale_ediliyor' | 'cozuldu' | 'kapatildi';
+
+export interface Emergency {
+  id: string;
+  trip_id: string | null;
+  emergency_type: EmergencyType;
+  location: string | null;
+  description: string | null;
+  urgency_level: EmergencyUrgency;
+  status: EmergencyStatus;
+  created_by: string | null;
+  created_by_user_id: string | null;
+  resolved_by: string | null;
+  resolution_note: string | null;
+  resolution_result: string | null;
+  resolved_at: string | null;
+  notify_user_ids: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface EmergencyAcknowledgment {
+  id: string;
+  emergency_id: string;
+  user_id: string;
+  user_name: string | null;
+  notification_sent: boolean;
+  notification_viewed: boolean;
+  acknowledged: boolean;
+  acknowledged_at: string | null;
+  created_at: string;
+}
+
+export interface PushSubscription {
+  id: string;
+  user_id: string;
+  endpoint: string;
+  p256dh_key: string;
+  auth_key: string;
+  created_at: string;
+}

@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/auth-context';
 import { logActivity } from '@/lib/activity';
 import { Trip, Bus, Participant, ParticipantStatus } from '@/lib/types';
 import { participantStatusLabels } from '@/lib/labels';
+import { formatDate } from '@/lib/format';
 import { toast } from 'sonner';
 
 interface ParticipantFormProps {
@@ -59,6 +60,78 @@ export function ParticipantForm({ trip, participant, onSaved, onCancel }: Partic
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
+  // Blacklist check helper
+  const checkBlacklistStatus = async (participantId: string): Promise<{
+    blocked: boolean;
+    violations?: string[];
+    adminNote?: string;
+    blacklistType?: string;
+    endDate?: string;
+  }> => {
+    // Get active blacklist entries for this participant
+    const { data: blacklistEntries } = await supabase
+      .from('blacklist_entries')
+      .select('*')
+      .eq('participant_id', participantId)
+      .in('status', ['aktif']);
+
+    if (!blacklistEntries || blacklistEntries.length === 0) {
+      // Also check 'suresiz' entries that might not have been caught
+      const { data: suresizEntries } = await supabase
+        .from('blacklist_entries')
+        .select('*')
+        .eq('participant_id', participantId)
+        .eq('blacklist_type', 'suresiz')
+        .eq('status', 'aktif');
+      if (!suresizEntries || suresizEntries.length === 0) return { blocked: false };
+    }
+
+    if (blacklistEntries && blacklistEntries.length > 0) {
+      // Check if any temporary blacklist has expired
+      const today = new Date().toISOString().split('T')[0];
+      const activeEntries = blacklistEntries.filter((e: any) => {
+        if (e.blacklist_type === 'gecici' && e.end_date && e.end_date < today) {
+          return false; // Expired
+        }
+        return true;
+      });
+
+      // Auto-expire any expired entries
+      for (const entry of blacklistEntries) {
+        if (entry.blacklist_type === 'gecici' && entry.end_date && entry.end_date < today) {
+          await supabase.from('blacklist_entries').update({ status: 'suresi_doldu' }).eq('id', entry.id);
+        }
+      }
+
+      if (activeEntries.length === 0) return { blocked: false };
+
+      // Get violations for the first active entry
+      const firstEntry = activeEntries[0];
+      const { data: violations } = await supabase
+        .from('blacklist_violations')
+        .select('trip_rules(rule_text)')
+        .eq('blacklist_entry_id', firstEntry.id);
+
+      const violationTexts = (violations || []).map((v: any) => v.trip_rules?.rule_text || '').filter(Boolean);
+
+      return {
+        blocked: true,
+        violations: violationTexts,
+        adminNote: firstEntry.admin_note || undefined,
+        blacklistType: firstEntry.blacklist_type,
+        endDate: firstEntry.end_date || undefined,
+      };
+    }
+
+    return { blocked: false };
+  };
+
+  const showBlacklistError = (info: any) => {
+    const violationList = (info.violations || []).map((v: string) => `• ${v}`).join('\n');
+    const message = `⛔ Bu öğrenci geziye eklenemez.\n\nÖğrenci aktif kara listede bulunmaktadır.\n\nİhlal edilen kurallar:\n${violationList}\n${info.adminNote ? `\nYönetici notu:\n${info.adminNote}\n` : ''}\nKara liste türü: ${info.blacklistType === 'gecici' ? 'Geçici' : info.blacklistType === 'suresiz' ? 'Süresiz' : 'İnceleme Altında'}${info.endDate ? `\nBitiş tarihi: ${formatDate(info.endDate)}` : ''}`;
+    toast.error(message, { duration: 10000, style: { whiteSpace: 'pre-wrap' } });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.first_name.trim() || !form.last_name.trim()) {
@@ -66,6 +139,32 @@ export function ParticipantForm({ trip, participant, onSaved, onCancel }: Partic
       return;
     }
     setSaving(true);
+
+    // Blacklist check: only when adding a new participant (not editing)
+    if (!participant) {
+      // First check if this student already exists in other trips by student_number
+      let existingParticipant: any = null;
+      if (form.student_number.trim()) {
+        const { data: existing } = await supabase
+          .from('participants')
+          .select('id, first_name, last_name')
+          .eq('student_number', form.student_number.trim())
+          .limit(1)
+          .maybeSingle();
+        if (existing) existingParticipant = existing;
+      }
+
+      // If we found an existing participant, check their blacklist status
+      if (existingParticipant) {
+        const blacklistCheck = await checkBlacklistStatus(existingParticipant.id);
+        if (blacklistCheck.blocked) {
+          setSaving(false);
+          showBlacklistError(blacklistCheck);
+          return;
+        }
+      }
+    }
+
     const payload = {
       trip_id: trip.id,
       bus_id: form.bus_id || null,
