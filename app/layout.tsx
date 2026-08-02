@@ -8,13 +8,13 @@ import { PWARegister } from '@/components/pwa-register';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'DMTAL Gezi Yönetim Sistemi',
-  description: 'Dörtçelik Mesleki ve Teknik Anadolu Lisesi',
+  title: 'DMTAL — Okul Gezi Yönetim Sistemi',
+  description: 'Okul gezi ve tur organizasyonları için yönetim paneli',
   manifest: '/manifest.json',
-  applicationName: 'DMTAL Gezi Yönetim Sistemi',
+  applicationName: 'DMTAL',
   appleWebApp: {
     capable: true,
-    title: 'DMTAL Gezi Yönetim Sistemi',
+    title: 'DMTAL GEZİYÖNET',
     statusBarStyle: 'default',
   },
   formatDetection: {
@@ -54,8 +54,8 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="DMTAL Gezi Yönetim Sistemi" />
-        <meta name="application-name" content="DMTAL Gezi Yönetim Sistemi" />
+        <meta name="apple-mobile-web-app-title" content="DMTAL GEZİYÖNET" />
+        <meta name="application-name" content="DMTAL GEZİYÖNET" />
       </head>
       <body className={inter.className}>
         <AuthProvider>

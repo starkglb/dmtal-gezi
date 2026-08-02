@@ -73,7 +73,7 @@ export interface PdfOptions {
 }
 
 function buildHeader(options: PdfOptions, now: string): Content {
-  const headerText = options.headerText || 'DMTAL Gezi Yönetim Uygulaması';
+  const headerText = options.headerText || 'DMTAL';
   const header: Content[] = [
     {
       columns: [

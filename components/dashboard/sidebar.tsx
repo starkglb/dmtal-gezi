@@ -52,8 +52,8 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
           </div>
           {!collapsed && (
             <div className="min-w-0">
-              <h1 className="truncate text-base font-bold text-slate-800">DMTAL Gezi Yönetim Sistemi</h1>
-              <p className="truncate text-xs text-slate-500">Dörtçelik Mesleki ve Teknik Anadolu Lisesi</p>
+              <h1 className="truncate text-base font-bold text-slate-800">DMTAL</h1>
+              <p className="truncate text-xs text-slate-500">Gezi Yönetim Sistemi</p>
             </div>
           )}
           <button
