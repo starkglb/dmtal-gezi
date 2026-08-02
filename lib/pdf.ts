@@ -73,7 +73,7 @@ export interface PdfOptions {
 }
 
 function buildHeader(options: PdfOptions, now: string): Content {
-  const headerText = options.headerText || 'GEZİYÖNET';
+  const headerText = options.headerText || 'DMTAL Gezi Yönetim Uygulaması';
   const header: Content[] = [
     {
       columns: [
@@ -181,7 +181,7 @@ export async function generatePdf(options: PdfOptions): Promise<void> {
     content.push(buildTable(options));
   }
 
-  const footerText = options.footerText || 'GEZİYÖNET Okul Gezi Yönetim Sistemi';
+  const footerText = options.footerText || 'DMTAL Okul Gezi Yönetim Sistemi';
 
   const docDefinition: TDocumentDefinitions = {
     content,
