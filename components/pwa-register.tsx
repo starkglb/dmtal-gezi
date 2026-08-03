@@ -58,7 +58,8 @@ export function PWARegister() {
       // Listen for messages from service worker (emergency notifications)
       navigator.serviceWorker.addEventListener('message', (event) => {
         if (event.data?.type === 'EMERGENCY_NOTIFICATION') {
-          // Dispatch custom event for the app to handle
+          // Dispatch custom event for the app to handle — the dashboard shell
+          // picks this up and shows the full-screen overlay + alarm
           window.dispatchEvent(new CustomEvent('emergency-notification', { detail: event.data }));
         }
       });
